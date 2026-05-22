@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Claude AI Skills Library — Accenture</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#08080e;
+  --surface:#101018;
+  --surface2:#16161f;
+  --surface3:#1e1e2a;
+  --border:rgba(255,255,255,0.06);
+  --border-h:rgba(168,85,247,0.35);
+  --accent:#a855f7;
+  --accent2:#7c3aed;
+  --glow:rgba(168,85,247,0.12);
+  --glow2:rgba(168,85,247,0.06);
+  --text:#ede9ff;
+  --muted:#7c7a96;
+  --dim:#3a3850;
+  --prod:#a855f7;
+  --client:#f59e0b;
+  --r:12px;--rsm:8px;
+  --ff-d:'Syne',sans-serif;
+  --ff-b:'DM Sans',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--ff-b);font-size:15px;line-height:1.6;overflow-x:hidden}
+
+/* grain */
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:999;opacity:.5}
+
+/* orbs */
+.orb{position:fixed;border-radius:50%;filter:blur(140px);pointer-events:none;z-index:0}
+.o1{width:700px;height:700px;background:radial-gradient(circle,#5b21b6,transparent 70%);top:-280px;left:-200px;opacity:.25}
+.o2{width:500px;height:500px;background:radial-gradient(circle,#7c3aed,transparent 70%);bottom:-150px;right:-150px;opacity:.15}
+.o3{width:350px;height:350px;background:radial-gradient(circle,#d97706,transparent 70%);top:40%;right:5%;opacity:.07}
+
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:100;background:rgba(8,8,14,0.85);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:.85rem 0}
+.nav-i{max-width:1100px;margin:0 auto;padding:0 2rem;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text);font-family:var(--ff-d);font-weight:700;font-size:16px;letter-spacing:-.02em}
+.logo-mark{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,var(--accent2),var(--accent));display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;box-shadow:0 0 20px rgba(168,85,247,.4)}
+.nav-pill{font-size:11px;font-weight:500;padding:4px 12px;background:var(--glow);border:1px solid rgba(168,85,247,.2);border-radius:20px;color:var(--accent);letter-spacing:.02em}
+
+/* ── HERO ── */
+.hero{padding:5.5rem 0 3.5rem;text-align:center;position:relative;z-index:1}
+.hero-kicker{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);padding:5px 14px;border:1px solid rgba(168,85,247,.18);border-radius:20px;background:var(--glow2);margin-bottom:1.6rem}
+.hero-kicker-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+h1{font-family:var(--ff-d);font-size:clamp(2.5rem,5.5vw,4.2rem);font-weight:800;line-height:1.0;letter-spacing:-.05em;margin-bottom:1.1rem}
+.h1-line1{display:block;color:var(--text)}
+.h1-line2{display:block;background:linear-gradient(90deg,var(--accent2),var(--accent),#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:1.0rem;color:var(--muted);max-width:460px;margin:0 auto 2.8rem;font-weight:300;line-height:1.65}
+
+/* stats */
+.stats{display:flex;justify-content:center;gap:3rem;margin-bottom:3rem;flex-wrap:wrap}
+.stat-n{font-family:var(--ff-d);font-size:2.2rem;font-weight:700;color:var(--text);line-height:1;margin-bottom:3px}
+.stat-l{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em}
+
+/* search */
+.search-wrap{max-width:520px;margin:0 auto 1.4rem;position:relative}
+.s-icon{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--dim);font-size:17px;pointer-events:none;font-style:normal}
+#si{width:100%;padding:13px 16px 13px 45px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-family:var(--ff-b);font-size:14px;outline:none;transition:border-color .2s,box-shadow .2s}
+#si:focus{border-color:rgba(168,85,247,.45);box-shadow:0 0 0 4px var(--glow2)}
+#si::placeholder{color:var(--dim)}
+
+/* filters */
+.filters{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:3.5rem}
+.fb{padding:7px 18px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:var(--ff-b);font-size:12.5px;font-weight:500;cursor:pointer;transition:all .18s;display:flex;align-items:center;gap:6px;position:relative;z-index:1}
+.fb:hover{border-color:var(--border-h);color:var(--text)}
+.fb.active{background:var(--glow);border-color:rgba(168,85,247,.35);color:var(--accent)}
+.fb.active-client{background:rgba(245,158,11,.08);border-color:rgba(245,158,11,.3);color:var(--client)}
+.fdot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+
+/* ── MAIN ── */
+.wrap{max-width:1100px;margin:0 auto;padding:0 2rem;position:relative;z-index:1}
+.section-label{font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:.09em;font-weight:500;margin-bottom:1.2rem}
+
+/* category headers */
+.cat-section{margin-bottom:3.5rem}
+.cat-header{display:flex;align-items:center;gap:10px;margin-bottom:1.2rem;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.cat-line{width:3px;height:20px;border-radius:2px;flex-shrink:0}
+.cat-title-text{font-family:var(--ff-d);font-size:14px;font-weight:600;letter-spacing:.02em}
+.cat-count{font-size:11px;color:var(--muted);margin-left:auto}
+
+/* grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:1rem}
+
+/* card */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.4rem;display:flex;flex-direction:column;gap:11px;transition:border-color .2s,transform .2s,box-shadow .2s;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1.5px;opacity:0;transition:opacity .2s}
+.card[data-cat="productivity"]::before{background:linear-gradient(90deg,var(--prod),transparent)}
+.card[data-cat="client-proposals"]::before{background:linear-gradient(90deg,var(--client),transparent)}
+.card:hover{border-color:var(--border-h);transform:translateY(-2px);box-shadow:0 20px 40px rgba(0,0,0,.5),0 0 0 1px rgba(168,85,247,.08)}
+.card:hover::before{opacity:1}
+
+.ch{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.ct{font-family:var(--ff-d);font-size:14.5px;font-weight:600;color:var(--text);line-height:1.3;letter-spacing:-.01em}
+.badge{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;padding:3px 9px;border-radius:20px;white-space:nowrap;flex-shrink:0}
+.bp{background:rgba(168,85,247,.1);color:var(--prod);border:1px solid rgba(168,85,247,.15)}
+.bc{background:rgba(245,158,11,.1);color:var(--client);border:1px solid rgba(245,158,11,.15)}
+
+.cd{font-size:13px;color:var(--muted);line-height:1.55}
+.cm{display:flex;flex-wrap:wrap;gap:10px;font-size:11.5px;color:var(--dim)}
+.cf{display:flex;gap:8px;margin-top:auto}
+
+.btn-dl{flex:1;padding:9px 14px;background:linear-gradient(135deg,var(--accent2),var(--accent));border:none;border-radius:var(--rsm);color:#fff;font-family:var(--ff-b);font-size:13px;font-weight:500;cursor:pointer;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px;transition:opacity .2s,box-shadow .2s}
+.btn-dl:hover{opacity:.9;box-shadow:0 4px 20px rgba(168,85,247,.4)}
+.btn-pv{padding:9px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--rsm);color:var(--muted);font-family:var(--ff-b);font-size:13px;font-weight:500;cursor:pointer;transition:all .18s}
+.btn-pv:hover{border-color:var(--border-h);color:var(--text)}
+
+/* empty */
+.empty{display:none;grid-column:1/-1;text-align:center;padding:3rem;color:var(--dim);font-size:13px}
+.empty.on{display:block}
+
+/* submit banner */
+.submit{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:4rem;position:relative;overflow:hidden}
+.submit::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--glow2),transparent 60%);pointer-events:none}
+.submit h3{font-family:var(--ff-d);font-size:15px;font-weight:600;margin-bottom:2px}
+.submit p{font-size:13px;color:var(--muted)}
+.btn-sub{padding:9px 20px;background:transparent;border:1px solid rgba(168,85,247,.35);border-radius:var(--rsm);color:var(--accent);font-family:var(--ff-b);font-size:13px;font-weight:500;cursor:pointer;text-decoration:none;white-space:nowrap;transition:all .18s;position:relative;z-index:1}
+.btn-sub:hover{background:var(--glow);box-shadow:0 0 20px var(--glow)}
+
+/* footer */
+footer{border-top:1px solid var(--border);padding:1.8rem 0;text-align:center}
+footer p{font-size:11.5px;color:var(--dim)}
+footer a{color:var(--accent);text-decoration:none}
+footer a:hover{text-decoration:underline}
+
+/* ── MODAL ── */
+.mb{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.75);backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;padding:1.5rem}
+.mb.open{display:flex}
+.modal{background:var(--surface);border:1px solid rgba(168,85,247,.2);border-radius:14px;max-width:580px;width:100%;max-height:82vh;overflow-y:auto;padding:2rem;position:relative;animation:su .2s ease}
+@keyframes su{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.mc{position:absolute;top:.9rem;right:.9rem;background:var(--surface2);border:1px solid var(--border);color:var(--muted);width:28px;height:28px;border-radius:6px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:color .15s}
+.mc:hover{color:var(--text)}
+.mt{font-family:var(--ff-d);font-size:1.25rem;font-weight:700;margin-bottom:.4rem;letter-spacing:-.02em}
+.msl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--dim);margin:.9rem 0 .4rem}
+.md-desc{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:.5rem}
+.m-uses{list-style:none;display:flex;flex-direction:column;gap:4px}
+.m-uses li{font-size:13px;color:var(--muted);padding-left:.9rem;position:relative}
+.m-uses li::before{content:'→';position:absolute;left:0;color:var(--accent)}
+.m-prompt{background:var(--surface2);border:1px solid var(--border);border-radius:var(--rsm);padding:1rem;font-size:12px;color:var(--muted);font-family:monospace;line-height:1.55;white-space:pre-wrap;max-height:160px;overflow-y:auto}
+.ma{display:flex;gap:8px;margin-top:1.4rem}
+
+@media(max-width:600px){.hero{padding:3.5rem 0 2.5rem}.stats{gap:2rem}.grid{grid-template-columns:1fr}.submit{flex-direction:column}}
+</style>
+</head>
+<body>
+
+<div class="orb o1"></div>
+<div class="orb o2"></div>
+<div class="orb o3"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-i">
+    <a class="logo" href="#">
+      <div class="logo-mark">✦</div>
+      Claude Skills Library
+    </a>
+    <span class="nav-pill">Accenture Internal</span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-kicker"><span class="hero-kicker-dot"></span>AI-Powered Prompt Skills</div>
+    <h1>
+      <span class="h1-line1">Your Team's</span>
+      <span class="h1-line2">AI Skills Library</span>
+    </h1>
+    <p class="hero-sub">Curated Claude prompt skills built by the team, for the team. Download, load into Claude, and go.</p>
+
+    <div class="stats">
+      <div class="stat"><div class="stat-n" id="totalCount">4</div><div class="stat-l">Skills</div></div>
+      <div class="stat"><div class="stat-n">2</div><div class="stat-l">Categories</div></div>
+    </div>
+
+    <div class="search-wrap">
+      <i class="s-icon">⌕</i>
+      <input id="si" type="text" placeholder="Search by name or use case…" autocomplete="off"/>
+    </div>
+
+    <div class="filters">
+      <button class="fb active" data-f="all">All Skills</button>
+      <button class="fb" data-f="productivity">
+        <span class="fdot" style="background:var(--prod)"></span>Productivity &amp; Meetings
+      </button>
+      <button class="fb" data-f="client-proposals">
+        <span class="fdot" style="background:var(--client)"></span>Client &amp; Proposals
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<main class="wrap">
+
+  <!-- Productivity section -->
+  <div class="cat-section" id="sec-productivity">
+    <div class="cat-header">
+      <div class="cat-line" style="background:var(--prod)"></div>
+      <span class="cat-title-text" style="color:var(--prod)">Productivity &amp; Meetings</span>
+      <span class="cat-count" id="count-productivity">2 skills</span>
+    </div>
+    <div class="grid" id="grid-productivity">
+
+      <article class="card" data-cat="productivity" data-title="Meeting Summariser" data-desc="Transforms raw meeting notes transcripts or bullet points into a structured summary with action items decisions and next steps">
+        <div class="ch">
+          <span class="ct">Meeting Summariser</span>
+          <span class="badge bp">Productivity</span>
+        </div>
+        <p class="cd">Transforms raw meeting notes or transcripts into a clean structured summary with action items, decisions, and next steps — ready to paste into Teams or email.</p>
+        <div class="cm">
+          <span>📄 .md file</span><span>👤 ACN</span><span>v1.0 · May 2026</span>
+        </div>
+        <div class="cf">
+          <!-- ↓ REPLACE the href below with your SharePoint link + &download=1 -->
+          <a class="btn-dl" href="meeting-summariser-v1.md&download=1" download>↓ Download</a>
+          <button class="btn-pv" onclick="openModal('meeting-summariser')">Preview</button>
+        </div>
+      </article>
+
+      <article class="card" data-cat="productivity" data-title="Status Update Writer" data-desc="Turns rough project notes into a concise professional status update formatted for emails Teams or reports">
+        <div class="ch">
+          <span class="ct">Status Update Writer</span>
+          <span class="badge bp">Productivity</span>
+        </div>
+        <p class="cd">Turns a rough brain-dump of progress, blockers, and upcoming work into a concise professional status update — with RAG status and formatted for any audience.</p>
+        <div class="cm">
+          <span>📄 .md file</span><span>👤 ACN</span><span>v1.0 · May 2026</span>
+        </div>
+        <div class="cf">
+          <!-- ↓ REPLACE the href below with your SharePoint link + &download=1 -->
+          <a class="btn-dl" href="status-update-writer-v1.md&download=1" download>↓ Download</a>
+          <button class="btn-pv" onclick="openModal('status-update-writer')">Preview</button>
+        </div>
+      </article>
+
+    </div>
+  </div>
+
+  <!-- Client & Proposals section -->
+  <div class="cat-section" id="sec-client-proposals">
+    <div class="cat-header">
+      <div class="cat-line" style="background:var(--client)"></div>
+      <span class="cat-title-text" style="color:var(--client)">Client &amp; Proposals</span>
+      <span class="cat-count" id="count-client">2 skills</span>
+    </div>
+    <div class="grid" id="grid-client">
+
+      <article class="card" data-cat="client-proposals" data-title="Proposal Executive Summary Writer" data-desc="Transforms a detailed proposal into a compelling executive summary written for senior stakeholders and C-suite">
+        <div class="ch">
+          <span class="ct">Proposal Exec Summary Writer</span>
+          <span class="badge bc">Client &amp; Proposals</span>
+        </div>
+        <p class="cd">Transforms a detailed proposal or brief into a compelling executive summary written for C-suite stakeholders who decide but don't read everything.</p>
+        <div class="cm">
+          <span>📄 .md file</span><span>👤 ACN</span><span>v1.0 · May 2026</span>
+        </div>
+        <div class="cf">
+          <!-- ↓ REPLACE the href below with your SharePoint link + &download=1 -->
+          <a class="btn-dl" href="proposal-exec-summary-v1.md&download=1" download>↓ Download</a>
+          <button class="btn-pv" onclick="openModal('proposal-exec-summary')">Preview</button>
+        </div>
+      </article>
+
+      <article class="card" data-cat="client-proposals" data-title="Client Objection Handler" data-desc="Generates confident responses to client objections during proposals pitches or commercial negotiations">
+        <div class="ch">
+          <span class="ct">Client Objection Handler</span>
+          <span class="badge bc">Client &amp; Proposals</span>
+        </div>
+        <p class="cd">Generates confident, well-reasoned responses to client objections during proposals and pitches — so you walk in prepared, not caught off guard.</p>
+        <div class="cm">
+          <span>📄 .md file</span><span>👤 ACN</span><span>v1.0 · May 2026</span>
+        </div>
+        <div class="cf">
+          <!-- ↓ REPLACE the href below with your SharePoint link + &download=1 -->
+          <a class="btn-dl" href="client-objection-handler-v1.md&download=1" download>↓ Download</a>
+          <button class="btn-pv" onclick="openModal('client-objection-handler')">Preview</button>
+        </div>
+      </article>
+
+    </div>
+  </div>
+
+  <!-- empty state (shown by JS when search returns nothing) -->
+  <div class="empty" id="emptyState">No skills match your search — try different keywords.</div>
+
+  <!-- SUBMIT BANNER -->
+  <div class="submit">
+    <div>
+      <h3>Have a skill to share?</h3>
+      <p>Upload your .md file to the SharePoint folder and post in the Teams channel.</p>
+    </div>
+    <!-- ↓ REPLACE with your SharePoint Claude Skills folder link -->
+    <a class="btn-sub" href="PASTE_SHAREPOINT_FOLDER_LINK_HERE" target="_blank">→ Submit a Skill</a>
+  </div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Claude AI Skills Library · Accenture Internal ·
+      Maintained by Accenture S&C ·
+      <!-- ↓ REPLACE with your Teams channel link -->
+      <a href="https://teams.microsoft.com/l/channel/19%3A8g7Bc4H7kKGTt0ic8Tlso34p_kpEslnDXEwNCLNiqyc1%40thread.tacv2/Claude%20Skills?groupId=3153413f-b79b-4bce-8116-fe917822b8fd&tenantId=e0793d39-0939-496d-b129-198edd916feb">Teams Channel ↗</a>
+    </p>
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div class="mb" id="mb" onclick="closeBd(event)">
+  <div class="modal" id="modal">
+    <button class="mc" onclick="closeModal()">✕</button>
+    <div class="mt" id="mTitle"></div>
+    <div id="mBadge" style="margin-bottom:.9rem"></div>
+    <p class="md-desc" id="mDesc"></p>
+    <div class="msl">Best used for</div>
+    <ul class="m-uses" id="mUses"></ul>
+    <div class="msl">Opening lines of system prompt</div>
+    <div class="m-prompt" id="mPrompt"></div>
+    <div class="ma">
+      <a class="btn-dl" id="mDl" href="#" download>↓ Download .md</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const DB = {
+  'meeting-summariser':{
+    title:'Meeting Summariser',cat:'productivity',
+    badge:'<span class="badge bp">Productivity</span>',
+    desc:'Transforms raw meeting notes, transcripts, or bullet points into a clean structured summary with action items, decisions, and next steps.',
+    uses:['Post-meeting stakeholder emails','Action item extraction from long calls','Client meeting recaps','Weekly team stand-up notes'],
+    prompt:'You are an expert meeting facilitator and business writer. When given raw meeting notes, a transcript, or bullet points, produce a professional meeting summary with: Key Decisions, Action Items table, Discussion Highlights, and Next Steps...',
+    href:'meeting-summariser-v1.md&download=1'
+  },
+  'status-update-writer':{
+    title:'Status Update Writer',cat:'productivity',
+    badge:'<span class="badge bp">Productivity</span>',
+    desc:'Turns a rough brain-dump of project progress, blockers, and upcoming work into a concise, professional status update with RAG status.',
+    uses:['Weekly project status reports','Client-facing progress updates','Exec escalation summaries','Internal team updates'],
+    prompt:'You are a senior project communications specialist. You turn rough project notes into crisp status updates. Structure: RAG status, This Week, In Progress, Blockers, Next Week, Key Dates...',
+    href:'status-update-writer-v1.md&download=1'
+  },
+  'proposal-exec-summary':{
+    title:'Proposal Executive Summary Writer',cat:'client-proposals',
+    badge:'<span class="badge bc">Client &amp; Proposals</span>',
+    desc:'Transforms a detailed proposal or bullet points into a compelling, client-centric executive summary for C-suite readers.',
+    uses:['RFP response executive summaries','New business proposal openers','Engagement extension documents','Internal business cases'],
+    prompt:'You are a senior Accenture proposal writer. Write executive summaries that are compelling, credible, and client-centric. Structure: The Opportunity, Our Approach, Why Accenture, Expected Outcomes, Investment & Timeline...',
+    href:'proposal-exec-summary-v1.md&download=1'
+  },
+  'client-objection-handler':{
+    title:'Client Objection Handler',cat:'client-proposals',
+    badge:'<span class="badge bc">Client &amp; Proposals</span>',
+    desc:'Generates confident, well-reasoned responses to client objections during proposals, pitches, and commercial negotiations.',
+    uses:['Proposal defence preparation','Commercial negotiation rehearsal','Pitch Q&A preparation','Handling procurement challenges'],
+    prompt:'You are a senior Accenture partner with deep experience in enterprise sales. For each objection, provide: what\'s really being said, 3 response options (Acknowledge & Reframe, Evidence-Led, Collaborative), a follow-up question, and what NOT to say...',
+    href:'client-objection-handler-v1.md&download=1'
+  }
+};
+
+// search + filter
+const cards = document.querySelectorAll('.card');
+const si = document.getElementById('si');
+const empty = document.getElementById('emptyState');
+let activeF = 'all';
+
+function run(){
+  const q = si.value.toLowerCase().trim();
+  let prodVis=0, clientVis=0;
+  cards.forEach(c=>{
+    const cat = c.dataset.cat;
+    const matchF = activeF==='all' || cat===activeF;
+    const matchQ = !q || c.dataset.title.toLowerCase().includes(q) || c.dataset.desc.toLowerCase().includes(q);
+    const show = matchF && matchQ;
+    c.style.display = show ? '' : 'none';
+    if(show && cat==='productivity') prodVis++;
+    if(show && (cat==='client-proposals')) clientVis++;
+  });
+  // show/hide category sections
+  const sp = document.getElementById('sec-productivity');
+  const sc = document.getElementById('sec-client-proposals');
+  if(sp) sp.style.display = (activeF==='client-proposals' && !q) ? 'none' : (prodVis===0 && activeF!=='all' ? 'none' : prodVis===0 && activeF==='all' ? 'none' : '');
+  if(sc) sc.style.display = (activeF==='productivity' && !q) ? 'none' : (clientVis===0 && activeF!=='all' ? 'none' : clientVis===0 && activeF==='all' ? 'none' : '');
+  if(sp) sp.style.display = (activeF==='client-proposals') ? 'none' : (prodVis===0 ? 'none' : '');
+  if(sc) sc.style.display = (activeF==='productivity') ? 'none' : (clientVis===0 ? 'none' : '');
+  const total = prodVis + clientVis;
+  empty.classList.toggle('on', total===0);
+  document.getElementById('totalCount').textContent = cards.length;
+}
+
+si.addEventListener('input', run);
+document.querySelectorAll('.fb').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.fb').forEach(x=>x.classList.remove('active','active-client'));
+    b.classList.add(b.dataset.f==='client-proposals' ? 'active-client' : 'active');
+    activeF = b.dataset.f;
+    run();
+  });
+});
+
+// modal
+function openModal(id){
+  const d=DB[id]; if(!d) return;
+  document.getElementById('mTitle').textContent=d.title;
+  document.getElementById('mBadge').innerHTML=d.badge;
+  document.getElementById('mDesc').textContent=d.desc;
+  document.getElementById('mUses').innerHTML=d.uses.map(u=>`<li>${u}</li>`).join('');
+  document.getElementById('mPrompt').textContent=d.prompt;
+  document.getElementById('mDl').href=d.href;
+  document.getElementById('mb').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){
+  document.getElementById('mb').classList.remove('open');
+  document.body.style.overflow='';
+}
+function closeBd(e){ if(e.target===document.getElementById('mb')) closeModal(); }
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
+</script>
+</body>
+</html>
